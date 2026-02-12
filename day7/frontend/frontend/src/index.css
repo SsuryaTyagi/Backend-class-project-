@@ -1,0 +1,21 @@
+body{
+  background-color: black;
+}
+
+.main{
+  font-family: sans-serif;
+  color: white;
+  font-size: larger;
+  display: flex;
+  gap: 1rem;
+  
+}
+.note{
+  background-color: gray;
+  border-radius: 0.7rem;
+  width: 300px;
+  padding-inline:2rem;
+}
+.note p{
+  font-size: 30px;
+}
