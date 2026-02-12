@@ -1,6 +1,8 @@
 // require express
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+
 const noteModel = require("./models/notes.model");
 
 // create server
@@ -9,6 +11,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use(express.static("./public"))
 
 // create routes 
 app.post("/notes",async(req,res)=>{
@@ -57,6 +60,9 @@ app.patch("/notes/:id",async(req,res)=>{
 })
 
 
+app.use("*name",(req,res)=>{
+    res.sendFile(path.join(__dirname,"..","/public/index.html"))
+})
 
 
 // export app

@@ -1,21 +1,126 @@
-body{
-  background-color: black;
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(134deg, #0f2027, #255564, #59a8ca);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
 }
 
-.main{
-  font-family: sans-serif;
-  color: white;
-  font-size: larger;
+/* Main container */
+.main {
+  width: 90%;
+  max-width: 1100px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+/* Form Styling */
+.form {
+  width: 100%;
   display: flex;
   gap: 1rem;
-  
+  margin-bottom: 2rem;
+  justify-content: center;
 }
-.note{
-  background-color: gray;
-  border-radius: 0.7rem;
-  width: 300px;
-  padding-inline:2rem;
+
+.form input {
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  width: 200px;
+  transition: 0.3s ease;
 }
-.note p{
-  font-size: 30px;
+
+.form input:focus {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #00f2fe;
+}
+
+/* Button Styling */
+.form button {
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(45deg, #00f2fe, #4facfe);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.form button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px #00f2fe;
+}
+
+/* Note Card */
+.note {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  width: 260px;
+  padding: 1.5rem;
+  color: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: 0.4s ease;
+  animation: fadeIn 0.6s ease forwards;
+  opacity: 0;
+}
+
+.note:hover {
+  transform: translateY(-10px) scale(1.05);
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+/* Text */
+.note h1 {
+  margin-bottom: 10px;
+}
+
+.note p {
+  font-size: 18px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+/* Delete Button */
+.note button {
+  margin-top: 15px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(45deg, #ff416c, #ff4b2b);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-left: 20px;
+}
+
+/* Hover Effect */
+.note button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255, 75, 43, 0.7);
+}
+
+/* Click Animation */
+.note button:active {
+  transform: scale(0.95);
+}
+
+/* Optional: smooth fade when deleting (agar class add karo to) */
+.note.removing {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: 0.4s ease;
 }
