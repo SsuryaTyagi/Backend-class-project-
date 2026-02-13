@@ -16,7 +16,7 @@ authRouter.post("/register", async (req, res) => {
 
     if (isUserAllreadyExist) {
       return res.status(409).json({
-        message: "User already exists",
+        message: "User allready exist",
       });
     }
 
@@ -78,7 +78,7 @@ authRouter.post("/login", async (req, res) => {
     res.status(200).json({
       message: "Login successful",
     });
-    
+
   } catch (error) {
     console.error(error);
 
