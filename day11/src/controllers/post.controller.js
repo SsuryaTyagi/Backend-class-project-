@@ -112,7 +112,7 @@ const getPostDetailsController = async (req, res) =>{
 
     if (!isValidUser) {
       return res.status(403).json({
-        messages:"forbidden Content "
+        messages:"forbidden Content ... "
       })
     }
      res.status(200).json({
