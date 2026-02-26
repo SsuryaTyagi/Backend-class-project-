@@ -30,7 +30,7 @@ const jwt = require("jsonwebtoken");
     });
 
     // coman data everuser unique
-    const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
+    const token = jwt.sign({ id: user._id, userName:user.username }, process.env.JWT_KEY, {
       expiresIn: "1d",
     });
 
@@ -75,7 +75,7 @@ const loginController =  async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
+    const token = jwt.sign({ id: user._id,userName:user.username }, process.env.JWT_KEY, {
       expiresIn: "1d",
     });
 
