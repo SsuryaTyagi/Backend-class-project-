@@ -1,5 +1,6 @@
 require("dotenv").config();
 const postModel = require("../models/post.models");
+const likeModel = require("../models/like.models");
 const { ImageKit, toFile } = require("@imagekit/nodejs");
 const jwt = require("jsonwebtoken");
 
@@ -66,8 +67,32 @@ const getPostDetailsController = async (req, res) => {
     post,
   });
 };
+
+const likePostController = async (req, res) => {
+  const likedUser = req.user.userName
+  const likePost = req.params.postId
+
+  const post = await postModel.findById(likePost);
+
+  if(!post){
+    return res.status(404).json({
+      message:"post not found"
+    });
+  }
+
+  const like = await likeModel.create({
+    post:likePost,
+    user:likedUser,
+  });
+
+  res.status(200).json({
+    message:"post like successfully.",
+    like
+  })
+};
 module.exports = {
   postController,
   getPostController,
   getPostDetailsController,
+  likePostController,
 };
