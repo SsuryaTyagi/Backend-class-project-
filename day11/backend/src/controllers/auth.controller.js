@@ -2,7 +2,7 @@ const userModel = require("../models/user.models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
- const registerController = async (req, res) => {
+const registerController = async (req, res) => {
   try {
     const { username, email, password, bio, profile_img } = req.body;
 
@@ -30,9 +30,13 @@ const jwt = require("jsonwebtoken");
     });
 
     // coman data everuser unique
-    const token = jwt.sign({ id: user._id, userName:user.username }, process.env.JWT_KEY, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { id: user._id, userName: user.username },
+      process.env.JWT_KEY,
+      {
+        expiresIn: "1d",
+      },
+    );
 
     res.cookie("token", token);
 
@@ -51,9 +55,9 @@ const jwt = require("jsonwebtoken");
       error: error.message,
     });
   }
-}
+};
 
-const loginController =  async (req, res) => {
+const loginController = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
@@ -75,9 +79,13 @@ const loginController =  async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: user._id,userName:user.username }, process.env.JWT_KEY, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { id: user._id, userName: user.username },
+      process.env.JWT_KEY,
+      {
+        expiresIn: "1d",
+      },
+    );
 
     res.cookie("token", token);
 
@@ -96,9 +104,25 @@ const loginController =  async (req, res) => {
       error: error.message,
     });
   }
-}
+};
+
+const getMeController = async (req, res) => {
+  const Id = req.user.id;
+
+  const user = await userModel.findById(Id);
+
+  res.status(200).json({
+    user: {
+      username: user.username,
+      email: user.email,
+      bio: user.bio,
+      profile_img: user.profile_img,
+    },
+  });
+};
 
 module.exports = {
-    registerController,
-    loginController
-}
+  registerController,
+  loginController,
+  getMeController,
+};

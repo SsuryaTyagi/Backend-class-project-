@@ -1,14 +1,14 @@
 import React from "react";
 import { Route, Routes } from 'react-router-dom';
-import Login from "./features/auth/pages/login.jsx";
-import Register from "./features/auth/pages/register.jsx";
+import RegisterPage from "./features/auth/pages/RegisterPage.jsx";
+import LoginPage from "./features/auth/pages/LoginPage.jsx";
 
 export default function AppRoutes() {
   return (
     <div>
       <Routes>
-        <Route path="/login" element={<Login/>} />
-        <Route path="/register" element={<Register/>} />
+        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/register" element={<RegisterPage/>} />
       </Routes>
     </div>
   );
