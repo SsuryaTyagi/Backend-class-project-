@@ -13,6 +13,7 @@ postRouter.post("/", upload.single('image'),identifyUser,Controller.postControll
 postRouter.get("/",identifyUser,Controller.getPostController)
 postRouter.get("/details/:postId",identifyUser,Controller.getPostDetailsController)
 postRouter.post("/like/:postId",identifyUser,Controller.likePostController);
+postRouter.get("/feed",identifyUser,Controller.getFeedController);
 
 
 module.exports = postRouter;

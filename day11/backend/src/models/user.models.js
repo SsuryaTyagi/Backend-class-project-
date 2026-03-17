@@ -14,12 +14,13 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true
+        required:true,
+        select: false
     },
     bio:String,
     profile_img:{
         type:String,
-        difault:"https://ik.imagekit.io/gb1lyvp8q/default-avatar-profile-icon-social-media-user-vector-49816613.avif"
+        default:"https://ik.imagekit.io/gb1lyvp8q/default-avatar-profile-icon-social-media-user-vector-49816613.avif"
     }
 });
 

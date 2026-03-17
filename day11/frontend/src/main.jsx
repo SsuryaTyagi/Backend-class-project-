@@ -7,9 +7,7 @@ import "./style.scss";
 import AuthProvider from "./features/auth/auth.context.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
-  </BrowserRouter>,
+  <AuthProvider>
+    <App />
+  </AuthProvider>,
 );

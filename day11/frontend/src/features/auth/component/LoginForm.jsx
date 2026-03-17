@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import "../style/form.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth.js";
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { handleLogin } = useAuth();
+  const { handleLogin,loading } = useAuth();
+const navigate = useNavigate()
+
+  if (loading) {
+    return(
+      <h1>loading....</h1>
+    )
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,6 +22,8 @@ export default function LoginForm() {
   try {
     const res = await handleLogin(username, password);
     console.log(res);
+    navigate("/")
+
   } catch (error) {
     console.log(error);
   }
