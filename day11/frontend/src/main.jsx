@@ -5,9 +5,13 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import "./style.scss";
 import AuthProvider from "./features/auth/auth.context.jsx";
+import PostProvider from "./features/post/post.context.jsx";
+
 
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
+    <PostProvider>
     <App />
+    </PostProvider>
   </AuthProvider>,
 );
