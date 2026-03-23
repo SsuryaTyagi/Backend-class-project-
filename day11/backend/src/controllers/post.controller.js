@@ -69,57 +69,77 @@ const getPostDetailsController = async (req, res) => {
 };
 
 const likePostController = async (req, res) => {
-  const likedUser = req.user.userName
-  const likePost = req.params.postId
+  const likedUser = req.user.userName;
+  const likePost = req.params.postId;
 
   const post = await postModel.findById(likePost);
 
-  if(!post){
+  if (!post) {
     return res.status(404).json({
-      message:"post not found"
+      message: "post not found",
     });
   }
 
   const like = await likeModel.create({
-    post:likePost,
-    user:likedUser,
+    post: likePost,
+    user: likedUser,
   });
 
   res.status(200).json({
-    message:"post like successfully.",
-    like
-  })
+    message: "post like successfully.",
+    like,
+  });
 };
 
-const getFeedController = async (req, res) =>{
+const unLikePostController = async (req, res) => {
+  const likedUser = req.user.userName;
+  const postId = req.params.postId;
 
-    const username = req.user.userName
+  const likePost = await likeModel.findById(postId);
 
+  if (!likePost) {
+    return res.status(404).json({
+      message: "post not found",
+    });
+  }
 
-  const posts =await Promise.all((await postModel.find().populate("user").lean()).map(
-    async (post) => {
-      const isLiked = await likeModel.findOne({
-        user: username,
-        post: post._id,
-      });
-
-      // console.log(isLiked);
-      
-      post.isLiked = !!isLiked;
-       
-      return post 
-    },
-  ));
+  await likeModel.findByIdAndDelete({ _id: likePost._id });
 
   res.status(200).json({
-    message:"posts fetched successfully..",
+    message: "post Unlike successfully.",
+  });
+};
+
+const getFeedController = async (req, res) => {
+  const username = req.user.userName;
+
+  const posts = await Promise.all(
+    (await postModel.find({}).sort({ _id: 1 }).populate("user").lean()).map(
+      async (post) => {
+        const isLiked = await likeModel.findOne({
+          user: username,
+          post: post._id,
+        });
+
+        // console.log(isLiked);
+
+        post.isLiked = !!isLiked;
+
+        return post;
+      },
+    ),
+  );
+
+  res.status(200).json({
+    message: "posts fetched successfully..",
     posts,
-  })
-}
+  });
+};
 module.exports = {
   postController,
   getPostController,
   getPostDetailsController,
   likePostController,
-  getFeedController
+  getFeedController,
+  unLikePostController
 };

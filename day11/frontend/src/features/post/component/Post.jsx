@@ -11,7 +11,6 @@ import {
 export default function Post({ post }) {
   return (
     <div className="post">
-      {/* Header */}
       <div className="post__header">
         <div className="post__profileWrapper">
           <img

@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { getFeed } from "../servises/Post.api.js";
+import { useContext, useEffect } from "react";
+import { getFeed, postCreate, like, unlike } from "../servises/Post.api.js";
 import { postContext } from "../post.context";
 
 export const userPost = () => {
@@ -10,9 +10,31 @@ export const userPost = () => {
   const handleGetFeed = async () => {
     setLoading(true);
     const data = await getFeed();
-    setFeed(data);
+    setFeed(data.posts);
     setLoading(false);
   };
 
-  return { loading, feed, post, handleGetFeed };
+  const handleCreatePost = async (caption, file) => {
+    setLoading(true);
+    const data = await postCreate(caption, file);
+    setFeed([data.post, ...feed]);
+    setLoading(false);
+  };
+
+  const handleLike = async (postId) => {
+    setLoading(true);
+    const res = await like(postId);
+    setLoading(false);
+  };
+
+  const handleUnLike = async (postId) => {
+    setLoading(true);
+    const res = await unlike(postId);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    handleGetFeed();
+  }, []);
+  return { loading, feed, post, handleGetFeed, handleCreatePost, handleLike, handleUnLike };
 };

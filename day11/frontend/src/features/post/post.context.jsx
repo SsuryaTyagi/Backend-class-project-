@@ -3,7 +3,7 @@ import React, { createContext, useState } from "react";
 export const postContext = createContext();
 export default function PostProvider({ children }) {
   const [post, setPost] = useState(null);
-  const [feed, setFeed] = useState(null);
+  const [feed, setFeed] = useState([]);
   const [loading, setLoading] = useState(false);
 
   return (
