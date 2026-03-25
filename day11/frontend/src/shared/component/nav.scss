@@ -1,17 +1,60 @@
 .nav {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    font: 2em sans-serif;
+  
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px ;
+  background: #ffffff;
+  border-bottom: 1px solid #dbdbdb;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 
-  button {
-    color:wheat;
-    background-color: red;
-    padding-inline: .5em;
-    border-radius: 50px;
-    outline: none;
-    border:none;
-    font-size: large;
-    font-weight: 400;
+  &__logo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    img {
+      width: 30px;
+      margin-right: 8px;
+    }
+
+    span {
+      font-weight: bold;
+      font-size: 20px;
+      color: #262626;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    svg {
+      font-size: 22px;
+      cursor: pointer;
+      color: #262626;
+      transition: 0.2s;
+    }
+
+    svg:hover {
+      transform: scale(1.2);
+    }
+  }
+
+  &__createBtn {
+    padding: 6px 14px;
+    background: #0095f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  &__createBtn:hover {
+    background: #0077cc;
   }
 }

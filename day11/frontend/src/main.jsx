@@ -6,12 +6,14 @@ import { BrowserRouter } from "react-router-dom";
 import "./style.scss";
 import AuthProvider from "./features/auth/auth.context.jsx";
 import PostProvider from "./features/post/post.context.jsx";
-
+import UserProvider from "./features/user/user.context.jsx";
 
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
     <PostProvider>
-    <App />
+      <UserProvider>
+        <App />
+      </UserProvider>
     </PostProvider>
   </AuthProvider>,
 );

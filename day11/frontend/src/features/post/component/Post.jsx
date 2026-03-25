@@ -7,7 +7,7 @@ import {
   FaBookmark,
   FaHeart,
 } from "react-icons/fa";
-import { userPost } from "../hooks/userPost";
+
 
 export default function Post({ post, handleUnLike, handleLike }) {
   return (
@@ -23,15 +23,15 @@ export default function Post({ post, handleUnLike, handleLike }) {
         <span className="post__username">{post.user?.username}</span>
       </div>
 
-      {/* Image */}
       <div className="post__image">
         <img src={post.imageUrl} alt="post" />
       </div>
 
-      {/* Actions */}
+
       <div className="post__actions">
         <div className="left">
           <button
+          className="like"
             onClick={() => {
               post.isLiked ? handleUnLike(post._id) : handleLike(post._id);
             }}

@@ -22,17 +22,17 @@ export const userPost = () => {
   };
 
   const handleLike = async (postId) => {
-    setLoading(true);
+    // setLoading(true);
     const res = await likePost(postId);
     await handleGetFeed()
-    setLoading(false);
+    // setLoading(false);
   };
 
   const handleUnLike = async (postId) => {
-    setLoading(true);
+    // setLoading(true);
     const res = await unlikePost(postId);
     await handleGetFeed()
-    setLoading(false);
+    // setLoading(false);
   };
 
   useEffect(() => {

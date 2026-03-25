@@ -1,5 +1,4 @@
 const followModel = require("../models/follow.models");
-const { findById } = require("../models/post.models");
 const userModel = require("../models/user.models");
 
 const userconstroller = async (req, res) => {
@@ -114,9 +113,64 @@ const rejectedFollowController = async (req, res) => {
 
   res.json({ message: "Follow request rejected" });
 };
+const AllFollowerController = async (req, res) => {
+  try {
+    const userName = req.user.userName;
+
+    const followers = await followModel.find({ followee: userName });
+
+    if (!followers || followers.length === 0) {
+      return res.status(200).json({
+        message: "followers is not found",
+        followers: [],
+      });
+    }
+
+    res.status(200).json({
+      message: "follower fetching successfull",
+      count: followers.length,
+      followers,
+    });
+  } catch (error) {
+    console.error("Error fetching followers:", error);
+
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+const AllFollowingController = async (req, res) => {
+  try {
+    const userName = req.user.userName;
+
+    const following = await followModel.find({ follower: userName });
+
+    if (!following || following.length === 0) {
+      return res.status(200).json({
+        message: "following is not found",
+        count:0,
+        following: [],
+      });
+    }
+
+    res.status(200).json({
+      message: "follower fetching successfull",
+      count: following.length,
+      following,
+    });
+  } catch (error) {
+    console.error("Error fetching following:", error);
+
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
 module.exports = {
   userconstroller,
   unfollowUserController,
   acceptFollowController,
   rejectedFollowController,
+  AllFollowerController,
+  AllFollowingController
 };

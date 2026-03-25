@@ -8,6 +8,8 @@ userRouter.post("/follow/:userName",identifyUser,followController.userconstrolle
 userRouter.post("/unfollow/:userName",identifyUser,followController.unfollowUserController);
 userRouter.patch("/follow/accept/:id",identifyUser,followController.acceptFollowController);
 userRouter.patch("/follow/rejected/:id",identifyUser,followController.rejectedFollowController);
+userRouter.get("/follower",identifyUser,followController.AllFollowerController);
+userRouter.get("/following",identifyUser,followController.AllFollowingController);
 
 
 
