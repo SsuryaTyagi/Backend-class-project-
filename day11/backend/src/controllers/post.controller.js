@@ -4,6 +4,7 @@ const likeModel = require("../models/like.models");
 const { ImageKit, toFile } = require("@imagekit/nodejs");
 const jwt = require("jsonwebtoken");
 
+
 const client = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY, // This is the default and can be omitted
 });
@@ -95,7 +96,7 @@ const unLikePostController = async (req, res) => {
   const likedUser = req.user.userName;
   const postId = req.params.postId;
 
-  const likePost = await likeModel.findById(postId);
+  const likePost = await likeModel.findOne({ post: postId });
 
   if (!likePost) {
     return res.status(404).json({
@@ -141,5 +142,5 @@ module.exports = {
   getPostDetailsController,
   likePostController,
   getFeedController,
-  unLikePostController
+  unLikePostController,
 };

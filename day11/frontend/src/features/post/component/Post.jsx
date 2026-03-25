@@ -7,8 +7,9 @@ import {
   FaBookmark,
   FaHeart,
 } from "react-icons/fa";
+import { userPost } from "../hooks/userPost";
 
-export default function Post({ post }) {
+export default function Post({ post, handleUnLike, handleLike }) {
   return (
     <div className="post">
       <div className="post__header">
@@ -30,7 +31,13 @@ export default function Post({ post }) {
       {/* Actions */}
       <div className="post__actions">
         <div className="left">
-          {post.isLiked ? <FaHeart className="liked" /> : <FaRegHeart />}
+          <button
+            onClick={() => {
+              post.isLiked ? handleUnLike(post._id) : handleLike(post._id);
+            }}
+          >
+            {post.isLiked ? <FaHeart className="liked" /> : <FaRegHeart />}
+          </button>
           <FaRegComment />
           <FaShare />
         </div>
