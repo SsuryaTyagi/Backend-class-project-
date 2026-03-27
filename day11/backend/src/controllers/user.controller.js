@@ -122,6 +122,7 @@ const AllFollowerController = async (req, res) => {
     if (!followers || followers.length === 0) {
       return res.status(200).json({
         message: "followers is not found",
+        count:0,
         followers: [],
       });
     }
