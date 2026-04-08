@@ -3,6 +3,7 @@ import "../../auth/Style/style.scss";
 import { useNavigate } from "react-router-dom";
 import Input from "../component/Input";
 import Button from "../component/Button";
+import useAuth from "../hooks/useAuth";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -10,15 +11,26 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
 
   const navigate = useNavigate();
+  const { loading, handleRegister } = useAuth();
 
- const handleSubmit = (e)=>{
+  if (loading) {
+    return <h1>loading....</h1>;
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email,password,name);
+    try {
+      const data = await handleRegister(name, email, password);
+      console.log(data);
+      navigate("/")
+    } catch (error) {
+        console.log(error);
+    }
 
     setEmail("");
     setPassword("");
     setName("");
- }
+  };
 
   return (
     <div className="auth">
@@ -31,7 +43,9 @@ export default function RegisterPage() {
           name="name"
           placeholder="Enter your name"
           value={name}
-          onChange={(e)=>{setName(e.target.value)}}
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
         />
 
         <Input
@@ -40,7 +54,9 @@ export default function RegisterPage() {
           name="email"
           placeholder="Enter your email"
           value={email}
-          onChange={(e)=>{setEmail(e.target.value)}}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
         />
 
         <Input
@@ -49,7 +65,9 @@ export default function RegisterPage() {
           name="password"
           placeholder="Enter your password"
           value={password}
-          onChange={(e)=>{setPassword(e.target.value)}}
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
         />
 
         <Button text="Register" type="submit" />

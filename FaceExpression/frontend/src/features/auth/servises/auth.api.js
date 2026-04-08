@@ -7,26 +7,26 @@ const api = axios.create({
 
 export const register = async (username, email, password) => {
   try {
-    const res = await api.post("/login", {
+    const res = await api.post("/register", {
       username,
       email,
       password,
     });
     return res.data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error.response?.data || error.message;
   }
 };
 
 export const login = async (email, password) => {
   try {
-    const res = await api.post("/register", {
+    const res = await api.post("/login", {
       email,
       password,
     });
     return res.data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error.response?.data || error.message;
   }
 };
 
@@ -40,6 +40,7 @@ export const logout = async () => {
     const res = await api.post("/logout");
     return res.data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error.response?.data || error.message;
   }
 };
+

@@ -21,8 +21,9 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      await handleLogin(email, password);
-      console.log(user);
+      const data = await handleLogin(email, password);
+      console.log(data);
+      navigate("/")
     } catch (error) {
       console.log(error);
     }

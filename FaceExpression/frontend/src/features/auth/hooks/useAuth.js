@@ -2,6 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import { authContext } from "../auth.context";
 import { getMe, login, logout, register } from "../servises/auth.api";
+import { useEffect } from "react";
 
 export default function useAuth() {
   const { user, loading, setUser, setLoading } = useContext(authContext);
@@ -11,6 +12,7 @@ export default function useAuth() {
     try {
       const res = await login(email, password);
       setUser(res);
+      return res;
     } catch (error) {
       console.log(error);
     } finally {
@@ -22,7 +24,8 @@ export default function useAuth() {
     setLoading(true);
     try {
       const res = await register(username, email, password);
-      setUser(res);
+      setUser(res.data);
+      return res;
     } catch (error) {
       console.log(error);
     } finally {
@@ -35,6 +38,7 @@ export default function useAuth() {
     try {
       const res = await getMe();
       setUser(res);
+      return res;
     } catch (error) {
       console.log(error);
     } finally {
@@ -53,6 +57,9 @@ export default function useAuth() {
     }
   };
 
+  useEffect(() => {
+    handleGetMe();
+  }, []);
   return {
     user,
     loading,

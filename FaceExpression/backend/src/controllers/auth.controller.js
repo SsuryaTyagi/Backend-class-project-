@@ -7,7 +7,6 @@ const redis = require("../config/cache")
 
 const registerController = async (req, res) => {
   try {
-    console.log("REGISTER HIT");
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
@@ -56,7 +55,9 @@ const registerController = async (req, res) => {
 const loginController = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-
+    
+ console.log(email,password);
+ 
     if ((!username && !email) || !password) {
       return res.status(400).json({
         message: "All fields are required",
