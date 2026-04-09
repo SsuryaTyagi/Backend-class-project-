@@ -3,7 +3,6 @@ const Controller = require("../controllers/post.controller")
 const multer = require("multer")
 const upload = multer({ storage: multer.memoryStorage() })
 const identifyUser = require("../middlewares/auth.middleware");
-const { post } = require("./user.routes");
 
 const postRouter = express.Router();
 

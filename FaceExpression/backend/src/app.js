@@ -12,7 +12,9 @@ app.use(cookieParser())
 
 // Require Routers
 const userRouter = require("./routes/user.routes");
+const Router = require("./routes/song.routes");
 
 app.use("/", userRouter)
+app.use("/",Router)
 
 module.exports = app
