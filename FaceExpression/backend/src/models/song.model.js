@@ -9,7 +9,7 @@ const songSchema = new mongoose.Schema({
     posterUrl:{
         type:String,
         required:true,
-        default: "https://source.unsplash.com/300x300/?music"
+        default: "https://www.fantastick.in/cdn/shop/files/CAMB011.jpg?v=1695123269&width=1946"
     },
     title:{
         type:String,

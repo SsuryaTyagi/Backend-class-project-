@@ -42,7 +42,7 @@ const songUploadController = async (req, res) => {
 
     // 🎯 Extract results
     const songFile = results[0];
-    let posterUrl = "https://source.unsplash.com/300x300/?music";
+    let posterUrl = "https://www.fantastick.in/cdn/shop/files/CAMB011.jpg?v=1695123269&width=1946";
 
     if (results[1]) {
       posterUrl = results[1].url;

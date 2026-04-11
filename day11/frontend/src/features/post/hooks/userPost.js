@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { getFeed, postCreate, likePost, unlikePost } from "../servises/Post.api.js";
+import { getFeed, postCreate, likePost, unlikePost } from "../services/Post.api.js";
 import { postContext } from "../post.context";
 
 export const userPost = () => {
