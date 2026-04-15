@@ -47,10 +47,10 @@ export const detectExpression = ({
       getScore("mouthSmileLeft") > 0.5 && getScore("mouthSmileRight") > 0.5;
 
     const sad =
-      getScore("mouthFrownLeft") > 0.04 && getScore("mouthFrownRight") > 0.04;
+      getScore("mouthFrownLeft") > 0.01 && getScore("mouthFrownRight") > 0.01;
 
-    // console.log(getScore("mouthFrownLeft"));
-    // console.log(getScore("mouthFrownRight"));
+    console.log(getScore("mouthFrownLeft"));
+    console.log(getScore("mouthFrownRight"));
 
     let currentExpression = "normal";
 

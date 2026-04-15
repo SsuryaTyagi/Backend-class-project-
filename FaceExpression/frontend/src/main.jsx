@@ -4,11 +4,15 @@ import "./index.css";
 import App from "./App.jsx";
 import AuthProvider from "./features/auth/auth.context.jsx";
 import HomeProvider from "./features/home/home.context.jsx";
+import SongProvider from "./features/songUpload/song.context.jsx";
+// import { SongProvider } from "./features/songUpload/song.context.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <HomeProvider>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
-  </HomeProvider>,
+  <SongProvider>
+    <HomeProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </HomeProvider>
+  </SongProvider>,
 );
