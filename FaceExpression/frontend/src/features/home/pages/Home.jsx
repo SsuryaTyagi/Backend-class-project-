@@ -9,7 +9,7 @@ export default function Home() {
     <>
       <FaceExpression
         onClick={(expression) => {
-             console.log("FROM CHILD:", expression);
+            //  console.log("FROM CHILD:", expression);
           handleGetSong(expression);
         }}
       />
