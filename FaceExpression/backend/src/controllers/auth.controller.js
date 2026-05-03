@@ -2,7 +2,6 @@ require("dotenv").config();
 const userModel = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const generateToken = require("../utils/generateToken");
-const blacklistModul = require("../models/blacklist.model");
 const redis = require("../config/cache")
 
 const registerController = async (req, res) => {
