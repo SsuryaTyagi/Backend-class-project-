@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Input from "../component/Input";
 import Button from "../component/Button";
 import useAuth from "../hooks/useAuth";
+import GoogleLoginButton from "../component/GoogleLoginButton";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -22,9 +23,9 @@ export default function RegisterPage() {
     try {
       const data = await handleRegister(name, email, password);
       console.log(data);
-      navigate("/")
+      navigate("/");
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
 
     setEmail("");
@@ -36,7 +37,7 @@ export default function RegisterPage() {
     <div className="auth">
       <form className="auth__form" onSubmit={handleSubmit}>
         <h2>Register</h2>
-
+        <GoogleLoginButton />
         <Input
           label="Name"
           type="text"

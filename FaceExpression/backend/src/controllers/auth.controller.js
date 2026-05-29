@@ -98,6 +98,7 @@ const loginController = async (req, res) => {
     });
   }
 };
+
 const getMe = async (req,res)=>{
   const user = await userModel.findById(req.user.id)
 

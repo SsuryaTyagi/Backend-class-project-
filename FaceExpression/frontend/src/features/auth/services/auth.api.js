@@ -44,3 +44,5 @@ export const logout = async () => {
   }
 };
 
+export const googleLoginURL = `http://localhost:3000/google`;
+
