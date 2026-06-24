@@ -1,7 +1,11 @@
 require("dotenv").config();
 const userModel = require("../models/user.model");
 const bcrypt = require("bcrypt");
-const generateToken = require("../utils/generateToken");
+const { sendVerificationEmail } = require("../services/email.service.js");
+const {
+  generateToken,
+  verifyVerificationToken,
+} = require("../utils/generateToken");
 const redis = require("../config/cache");
 
 const registerController = async (req, res) => {
@@ -32,18 +36,15 @@ const registerController = async (req, res) => {
       username,
       email,
       password: hashPassword,
+      verified: false,
     });
 
     const token = generateToken(user);
-    res.cookie("token", token);
+    await sendVerificationEmail(email, username, token);
 
-    res.status(201).json({
-      message: "user successfully register",
-      user: {
-        username: user.username,
-        email: user.email,
-      },
-    });
+    return res
+      .status(201)
+      .json({ message: "Check your email to verify your account." });
   } catch (error) {
     res.status(500).json({
       message: "Server error",
@@ -55,7 +56,7 @@ const loginController = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    console.log(email, password);
+    // console.log(email, password);
 
     if ((!username && !email) || !password) {
       return res.status(400).json({
@@ -63,16 +64,25 @@ const loginController = async (req, res) => {
       });
     }
 
-    const User = await userModel
-      .findOne({
-        $or: [{ username: username }, { email: email }],
-      })
-      .select("+password");
+    const query = [];
+    if (email) query.push({ email });
+    if (username) query.push({ username });
+
+    const User = await userModel.findOne({ $or: query }).select("+password");
 
     if (!User) {
       return res.status(404).json({
         message: "user not found.",
       });
+    }
+    // console.log("User:", User);
+    // console.log("Verified Value:", User.verified);
+    // console.log("Type:", typeof User.verified);
+    
+    if (!User.verified) {
+      return res
+        .status(403)
+        .json({ message: "Please verify your email before logging in." });
     }
 
     const validPass = await bcrypt.compare(password, User.password);
@@ -86,9 +96,9 @@ const loginController = async (req, res) => {
     const token = generateToken(User);
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "lax", 
-      secure: false, 
-      maxAge: 7 * 24 * 60 * 60 * 1000, 
+      sameSite: "lax",
+      secure: false,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -126,9 +136,31 @@ const logout = async (req, res) => {
   });
 };
 
+const VerifyEmailController = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const decoded = verifyVerificationToken(token);
+
+    const user = await userModel.findOne({ _id: decoded.id });
+    if (!user) return res.status(400).json({ message: "Invalid link" });
+    if (user.verified)
+      return res.status(400).json({ message: "Already verified" });
+
+    user.verified = true;
+    await user.save();
+
+    return res.status(200).json({ message: "Email verified successfully" });
+  } catch (err) {
+    const msg =
+      err.name === "TokenExpiredError" ? "Link expired" : "Invalid link";
+    return res.status(400).json({ message: msg });
+  }
+};
+
 module.exports = {
   registerController,
   loginController,
   getMe,
   logout,
+  VerifyEmailController,
 };

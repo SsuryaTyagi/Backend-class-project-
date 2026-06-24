@@ -5,7 +5,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
     unique: true,
-    sparse: true, 
+    sparse: true,
+    index: true,
+  },
+  githubId: {          // ✅ GitHub ke liye add karo
+    type: String,
+    required: false,
+    unique: true,
+    sparse: true,
     index: true,
   },
   avatar: {
@@ -14,7 +21,7 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: function () {
-      return !this.googleId;
+      return !this.googleId && !this.githubId; 
     },
     unique: [true, "username is already exists"],
   },
@@ -26,10 +33,11 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: function () {
-      return !this.googleId;
+      return !this.googleId && !this.githubId; 
     },
     select: false,
   },
+  verified: { type: Boolean, default: false },
 });
 
 const userModel = mongoose.model("user", userSchema);

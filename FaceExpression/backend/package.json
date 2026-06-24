@@ -1,10 +1,10 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "server.js",
+"scripts": {
+  "start": "node server.js"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -22,7 +22,9 @@
     "mongoose": "^9.6.2",
     "multer": "^2.1.1",
     "node-id3": "^0.2.9",
+    "nodemailer": "^8.0.10",
     "passport": "^0.7.0",
+    "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
     "react-router-dom": "^7.14.0"
   }
