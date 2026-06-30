@@ -107,7 +107,7 @@ const LoginController = async (req, res) => {
     });
   }
 
-  const token = generateVerificationToken(User.email, User._id);
+  const token = generateVerificationToken(User);
   res.cookie("token", token);
 
     return res.status(200).json({
@@ -122,4 +122,13 @@ const LoginController = async (req, res) => {
     });;
 };
 
-module.exports = { RegisterController, VerifyEmailController, LoginController };
+const getMe = async (req, res) => {
+  const user = await userModel.findById(req.user.id);
+
+  res.status(200).json({
+    message: "User fetched successfully",
+    user,
+  });
+};
+
+module.exports = { RegisterController, VerifyEmailController, LoginController, getMe };

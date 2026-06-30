@@ -1,5 +1,5 @@
 import React from "react";
-import "../Style/style.scss";
+import "../Style/Style.scss";
 import AuthLeft from "../component/AuthLeft";
 import AuthCard from "../component/AuthCard";
 

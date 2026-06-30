@@ -1,7 +1,7 @@
 import React from "react";
 import { VscGithub } from "react-icons/vsc";
 
-const githubLoginURL = `http://localhost:3000/github`;
+const githubLoginURL = `https://face-expression-backend.vercel.app/github`;
 
 export default function GithubButton() {
   return (

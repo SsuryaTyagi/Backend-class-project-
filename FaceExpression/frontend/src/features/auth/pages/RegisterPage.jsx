@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import "../../auth/Style/style.scss";
+import "../Style/Style.scss";
 import { useNavigate } from "react-router-dom";
 import Input from "../component/Input";
 import Button from "../component/Button";
 import useAuth from "../hooks/useAuth";
+
 import GoogleLoginButton from "../component/GoogleLoginButton";
 
 export default function RegisterPage() {

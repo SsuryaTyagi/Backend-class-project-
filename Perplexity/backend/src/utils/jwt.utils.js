@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 
-// ─── Verification Token (Email verify ke liye) ─────────────
-const generateVerificationToken = (email) => {
+
+const generateVerificationToken = (user) => {
   return jwt.sign(
-    { email },
+    { id: user._id },
     process.env.JWT_VERIFY_SECRET,
     { expiresIn: "24h" }
   );
@@ -13,7 +13,7 @@ const verifyVerificationToken = (token) => {
   return jwt.verify(token, process.env.JWT_VERIFY_SECRET);
 };
 
-// ─── Access Token (Login ke liye) ──────────────────────────
+
 const generateAccessToken = (userId) => {
   return jwt.sign(
     { id: userId },
