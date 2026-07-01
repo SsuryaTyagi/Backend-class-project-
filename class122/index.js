@@ -4,7 +4,15 @@ import { ChatMistralAI } from "@langchain/mistralai";
 import { HumanMessage } from "@langchain/core/messages";
 import { sendEmail } from "./email.service.js";
 import { tool, createAgent } from "langchain";
+import { searchWeb } from "./search.service.js";
 import * as z from "zod";
+
+
+
+const model = new ChatMistralAI({
+  model: "mistral-small-latest",
+});
+
 
 const emailTool = tool(sendEmail, {
   name: "email_tool",
@@ -15,28 +23,30 @@ const emailTool = tool(sendEmail, {
     subject: z.string().describe("The subject of the email"),
   }),
 });
-
-const model = new ChatMistralAI({
-  model: "mistral-small-latest",
+const searchTool = tool(searchWeb, {
+  name: "search_tool",
+  description: "Use this tool to search the internet for current or factual information",
+  schema: z.object({
+    query: z.string().describe("The search query"),
+  }),
 });
-
 
 const agent = createAgent({
   model,
-  tools: [emailTool],
+  tools: [emailTool, searchTool],
 });
-
 
 const messages = [];
 
 while (true) {
-  const userInput = await readlineSync.question("you: ");
+  const userInput = readlineSync.question("you: ");
   messages.push(new HumanMessage(userInput));
 
-  const response = await agent.invoke({messages});
-  // messages.push(response);
+  const result = await agent.invoke({ messages });
+  const response = result.messages[result.messages.length - 1];
 
-  console.log("AI: " + response);
+  messages.push(response);
+  console.log("AI: " + response.content);
 }
 
 readlineSync.close();
