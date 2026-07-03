@@ -1,6 +1,6 @@
-import axios, { create } from "axios";
+import axios from "axios";
 
-const api = create({
+const api = axios.create({
   baseURL: "http://localhost:3000",
   withCredentials: true,
 });
@@ -19,7 +19,7 @@ export const login = async (email, password) => {
 
 export const register = async (username, email, password) => {
   try {
-    const response = api.post("/register", {
+    const response = await api.post("/register", {
       username,
       email,
       password,
@@ -32,7 +32,7 @@ export const register = async (username, email, password) => {
 
 export const getMe = async () => {
   try {
-    const response = api.get("/getMe");
+    const response = await api.get("/getMe");
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

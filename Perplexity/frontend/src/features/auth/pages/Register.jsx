@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import {  useNavigate } from "react-router-dom";
 
 const Register = () => {
   // Two-way binding: state variables hold the live value of each input
@@ -7,9 +9,9 @@ const Register = () => {
     username: "",
     password: "",
   });
+    const navigate = useNavigate(); 
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { handleRegister, loading, error } = useAuth();
 
   // Single handler for all inputs — uses the input's `name` to update the right field
   const handleChange = (e) => {
@@ -22,29 +24,13 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
-
-    try {
-      // Replace with your actual API endpoint
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Registration failed");
-      }
-
-      console.log("Registration success:", data);
-      // e.g. navigate("/login") after successful signup
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    const res = await handleRegister(
+      formData.username,
+      formData.email,
+      formData.password,
+    );
+    if (res) {
+      navigate("/verify-email-sent", { state: { email: formData.email } });
     }
   };
 
@@ -67,9 +53,7 @@ const Register = () => {
           <h1 className="text-2xl font-semibold text-[#1F1F1F] mb-1">
             Create your account
           </h1>
-          <p className="text-sm text-[#6B6B65] mb-6">
-            Sign up to get started
-          </p>
+          <p className="text-sm text-[#6B6B65] mb-6">Sign up to get started</p>
 
           {error && (
             <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
@@ -146,7 +130,10 @@ const Register = () => {
 
           <p className="text-sm text-[#6B6B65] text-center mt-6">
             Already have an account?{" "}
-            <a href="/login" className="text-[#20808D] font-medium hover:underline">
+            <a
+              href="/login"
+              className="text-[#20808D] font-medium hover:underline"
+            >
               Log in
             </a>
           </p>

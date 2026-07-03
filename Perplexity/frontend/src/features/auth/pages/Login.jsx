@@ -1,49 +1,29 @@
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   // Two-way binding: state variables hold the live value of each input
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const { handleLogin, user, loading, error } = useAuth();
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  // Single handler for all inputs — uses the input's `name` to update the right field
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
+    await handleLogin(formData.email, formData.password);
 
-    try {
-      // Replace with your actual API endpoint
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Login failed");
-      }
-
-      console.log("Login success:", data);
-      // e.g. navigate("/dashboard") or store token here
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    console.log(user);
+    
+    if (user) {
+      navigate("/");
     }
   };
 
@@ -126,7 +106,10 @@ const Login = () => {
 
           <p className="text-sm text-[#6B6B65] text-center mt-6">
             Don't have an account?{" "}
-            <a href="/register" className="text-[#20808D] font-medium hover:underline">
+            <a
+              href="/register"
+              className="text-[#20808D] font-medium hover:underline"
+            >
               Sign up
             </a>
           </p>
