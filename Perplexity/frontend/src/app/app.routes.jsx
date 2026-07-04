@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "../features/auth/pages/Login";
 import Register from "../features/auth/pages/Register";
 import VerifyEmailSent from "../features/auth/component/VerifyEmailSent";
+import Dashboard from "../features/chats/pages/Dashboard";
+import Protected from "../features/auth/component/Protected";
 
 export const router = createBrowserRouter([
   {
@@ -14,7 +16,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <h1>Welcome to VisionAI</h1>,
+    element: (
+      <Protected>
+        <Dashboard />
+      </Protected>
+    ),
   },
   {
     path: "/verify-email-sent",

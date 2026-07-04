@@ -21,8 +21,8 @@ const Login = () => {
     await handleLogin(formData.email, formData.password);
 
     console.log(user);
-    
-    if (user) {
+
+    if (user && !loading) {
       navigate("/");
     }
   };

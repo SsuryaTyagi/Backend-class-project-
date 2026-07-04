@@ -25,7 +25,7 @@ const RegisterController = async (req, res) => {
 
     const newUser = await userModel.create({ username, email, password });
 
-    const verificationToken = generateVerificationToken(email);
+    const verificationToken = generateVerificationToken(newUser);
 
     sendVerificationEmail(email, username, verificationToken).catch((err) =>
       console.error("Email Error:", err),

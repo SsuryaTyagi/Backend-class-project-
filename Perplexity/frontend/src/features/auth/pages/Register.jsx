@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   // Two-way binding: state variables hold the live value of each input
@@ -9,9 +9,9 @@ const Register = () => {
     username: "",
     password: "",
   });
-    const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-  const { handleRegister, loading, error } = useAuth();
+  const { handleRegister, loading, error, user } = useAuth();
 
   // Single handler for all inputs — uses the input's `name` to update the right field
   const handleChange = (e) => {
@@ -33,6 +33,10 @@ const Register = () => {
       navigate("/verify-email-sent", { state: { email: formData.email } });
     }
   };
+
+  if (user && !loading) {
+    navigate("/");
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FBFAF7] px-4">
