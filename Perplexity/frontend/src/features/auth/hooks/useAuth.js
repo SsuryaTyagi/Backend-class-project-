@@ -3,6 +3,7 @@ import { login, register, getMe } from "../service/auth.api";
 import { setUser, setLoading, setError } from "../auth.slice";
 import { useEffect } from "react";
 import { getErrorMessages } from "../utils/getErrorMessage";
+import { toast } from "react-hot-toast";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -13,8 +14,10 @@ export const useAuth = () => {
       dispatch(setLoading(true));
       const res = await register(username, email, password);
       return res;
+      toast.success(res.message || "Registration successful!");
     } catch (error) {
       dispatch(setError(getErrorMessages(error, "Registration Failed")));
+      toast.error(error.message || "Registration failed!");
     } finally {
       dispatch(setLoading(false));
     }
@@ -25,9 +28,11 @@ export const useAuth = () => {
       dispatch(setLoading(true));
       const res = await login(email, password);
       dispatch(setUser(res.user));
+      toast.success(res.message || "Login successful!");
       return res;
     } catch (error) {
       dispatch(setError(getErrorMessages(error, "Login Failed")));
+      toast.error(error.message || "Login failed!");
     } finally {
       dispatch(setLoading(false));
     }
@@ -38,11 +43,13 @@ export const useAuth = () => {
       dispatch(setLoading(true));
       const res = await getMe();
       dispatch(setUser(res.user));
+      toast.success(res.message || "Profile updated!");
       return res;
     } catch (error) {
       dispatch(
         setError(getErrorMessages(error, "Failed to fetch user information")),
       );
+      toast.error(error.message || "Failed to fetch user information!");
       dispatch(setUser(null));
     } finally {
       dispatch(setLoading(false));
