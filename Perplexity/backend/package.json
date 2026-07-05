@@ -10,7 +10,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@langchain/core": "^1.2.1",
     "@langchain/google-genai": "^2.2.0",
+    "@langchain/mistralai": "^1.2.0",
+    "@tavily/core": "^0.7.6",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
@@ -22,6 +25,8 @@
     "mongoose": "^9.6.1",
     "morgan": "^1.11.0",
     "nodemailer": "^8.0.7",
-    "socket.io": "^4.8.3"
+    "readline-sync": "^1.4.10",
+    "socket.io": "^4.8.3",
+    "zod": "^4.4.3"
   }
 }

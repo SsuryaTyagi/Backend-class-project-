@@ -4,19 +4,22 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    type: "OAuth2",
+    user: process.env.GOOGLE_USER,
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_SECRET,
+    refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
   },
 });
 
-const sendVerificationEmail = async (toEmail, username, token) => {
+const sendVerificationEmail = async (toEmail, username, token,to, subject, text, html ) => {
   const verifyUrl = `http://localhost:3000/verify-email/${token}`;
 
   const mailOptions = {
-    from: `"Preplexity" <${process.env.SMTP_USER}>`,
-    to: toEmail,
-    subject: "Verify Your Email — Preplexity",
-    html: `
+    from: `"Preplexity" <${process.env.GOOGLE_USER}>`,
+    to: toEmail || to,
+    subject: subject || "Verify Your Email — Preplexity",
+    html: html || `
       <!DOCTYPE html>
       <html>
         <body style="margin:0; padding:0; background:#f4f4f4; font-family: Arial, sans-serif;">
