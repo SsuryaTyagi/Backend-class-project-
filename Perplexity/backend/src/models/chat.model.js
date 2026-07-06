@@ -12,7 +12,7 @@ const chatSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Title is required'],
       trim: true,
-      maxlength: [200, 'Title cannot exceed 200 characters'],
+      maxlength: [50, 'Title cannot exceed 50 characters'],
       default: 'New Chat',
     },
   },
@@ -23,12 +23,6 @@ const chatSchema = new mongoose.Schema(
   }
 );
  
-// Virtual: get all messages belonging to this chat
-chatSchema.virtual('messages', {
-  ref: 'Message',
-  localField: '_id',
-  foreignField: 'chat',
-});
  
 module.exports = mongoose.model('Chat', chatSchema);
  

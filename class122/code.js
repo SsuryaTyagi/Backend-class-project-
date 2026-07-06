@@ -48,7 +48,6 @@
 // console.log(counter.reset());
 // console.log(counter.decrement());
 
-
 // Example 1:
 
 // Input: functions = [x => x + 1, x => x * x, x => 2 * x], x = 4
@@ -75,7 +74,7 @@
 // Explanation:
 // The composition of zero functions is the identity function
 // var compose = function(functions) {
-    
+
 //     return function(x) {
 //         functions.reverse().forEach((fn) => {
 //             x = fn(x);
@@ -86,10 +85,54 @@
 
 //   const fn = compose([])
 //   console.log(fn(4) );
-  
 
-var argumentsLength = function(...args) {
-    return args.length;
+// var argumentsLength = function(...args) {
+//     return args.length;
+// };
+
+//  argumentsLength(1, 2, 3); // 3
+// var reduce = function(nums, fn, init) {
+
+//     let output = null
+//     nums.forEach((num) => {
+//         output = fn(output, num);
+//     });
+//     return output==null?init:output;
+// };
+
+// console.log(reduce([1, 2, 3, 4], function sum(accum, curr) { return accum + curr; }, 0) );
+
+// var once = function (fn) {
+//   let calls = 0;
+//   if (calls >= 1) {
+//     return undefined;
+//   }
+//   if (calls === 0) {
+//     calls++;
+//   }
+//   return function (...args) {
+//     let value = fn(...args);
+//     return { "calls": calls, "value": value };
+//   };
+// };
+
+
+
+var once = function (fn) {
+  let calls = 0;
+
+  return function (...args) {
+    if (calls > 0) {
+      return undefined;
+    }
+    calls++;
+    let value = fn(...args);
+    return [{ "calls": calls, "value": value }];
+  };
 };
 
- argumentsLength(1, 2, 3); // 3
+let fn = (a, b, c) => a + b + c;
+let onceFn = once(fn);
+
+console.log(onceFn(1, 2, 3)); // 6
+console.log(onceFn(2, 3, 6)); // undefined

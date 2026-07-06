@@ -1,40 +1,35 @@
-import "dotenv/config";
-import readlineSync from "readline-sync";
-import { ChatMistralAI } from "@langchain/mistralai";
-import { HumanMessage } from "@langchain/core/messages";
-import { sendVerificationEmail } from "./email.service.js";
-import { tool, createAgent } from "langchain";
-// import { searchWeb } from "./search.service.js";
-import * as z from "zod";
+require("dotenv/config");
+const { ChatMistralAI } = require("@langchain/mistralai");
+const { HumanMessage, AIMessage } = require("@langchain/core/messages");
+const { model, agent } = require("./agent.js");
 
-const model = new ChatMistralAI({
-  model: "mistral-small-latest",
-});
 
-// const emailTool = tool(sendVerificationEmail, {
-//   name: "email_tool",
-//   description: "Use this tool to send an email",
-//   schema: z.object({
-//     to: z.string().describe("The recipient's email address"),
-//     html: z.string().describe("The html content of the email"),
-//     subject: z.string().describe("The subject of the email"),
-//   }),
-// });
-// const searchTool = tool(searchWeb, {
-//   name: "search_tool",
-//   description:
-//     "Use this tool to search the internet for current or factual information",
-//   schema: z.object({
-//     query: z.string().describe("The search query"),
-//   }),
-// });
-
-// const agent = createAgent({
-//   model,
-//   tools: [emailTool],
-// });
-
-export const generateResponse = async (userInput) => {
-  const result = await model.invoke([new HumanMessage(userInput)]);
-  return result.content;
+const generateResponse = async (messages) => {
+  const result = await agent.invoke({
+    messages: messages.map((msg) =>{
+        if (msg.role === "user") {
+            return new HumanMessage(msg.content);
+        }else if (msg.role === "ai") {
+            return new AIMessage(msg.content);
+        }
+    }),
+  });
+  const lastMessage = result.messages[result.messages.length - 1];
+  return lastMessage.content;
 };
+
+const generateChatTitle = async (userInput) => {
+  const prompt = `
+You are naming a chat conversation.
+Generate a short, clear title (max 5-6 words) that summarizes the topic below.
+Do NOT use quotes, punctuation at the end, or the words "title:".
+Just return the plain title text.
+
+User: ${userInput}
+`.trim();
+
+  const result = await model.invoke([new HumanMessage(prompt)]);
+  return result.content.trim();
+};
+
+module.exports = { generateResponse, generateChatTitle };
