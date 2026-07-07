@@ -118,21 +118,32 @@
 
 
 
-var once = function (fn) {
-  let calls = 0;
+// var once = function (fn) {
+//   let calls = 0;
 
-  return function (...args) {
-    if (calls > 0) {
-      return undefined;
-    }
-    calls++;
-    let value = fn(...args);
-    return [{ "calls": calls, "value": value }];
-  };
+//   return function (...args) {
+//     if (calls > 0) {
+//       return undefined;
+//     }
+//     calls++;
+//     let value = fn(...args);
+//     return [{ "calls": calls, "value": value }];
+//   };
+// };
+
+// let fn = (a, b, c) => a + b + c;
+// let onceFn = once(fn);
+
+// console.log(onceFn(1, 2, 3)); // 6
+// console.log(onceFn(2, 3, 6)); // undefined
+
+
+var addTwoPromises = async function(promise1, promise2) {
+    const [value1, value2] = await Promise.all([promise1, promise2]);
+    return value1 + value2;
 };
 
-let fn = (a, b, c) => a + b + c;
-let onceFn = once(fn);
-
-console.log(onceFn(1, 2, 3)); // 6
-console.log(onceFn(2, 3, 6)); // undefined
+/**
+ * addTwoPromises(Promise.resolve(2), Promise.resolve(2))
+ *   .then(console.log); // 4
+ */

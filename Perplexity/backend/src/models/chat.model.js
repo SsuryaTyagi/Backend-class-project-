@@ -18,8 +18,6 @@ const chatSchema = new mongoose.Schema(
   },
   {
     timestamps: true, // auto-manages createdAt and updatedAt
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
   }
 );
  
