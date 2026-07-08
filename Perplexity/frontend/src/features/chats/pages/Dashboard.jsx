@@ -1,86 +1,77 @@
-import React from 'react'
-import { useAuth } from '../../auth/hooks/useAuth';
-import { useChat } from '../hooks/useChat';
-import Sidebar from '../components/Sidebar';
-import TopBar from '../components/Topbar';
-import Greeting from '../components/Greeting';
-import SearchBar from '../components/PromptInput';
-import SuggestionChips from '../components/Suggestionchips';
-
-
-export default function Dashboard() {
-
-  const { initializeSocketConnection } = useChat();
-
-  const { user } = useAuth();
-      console.log(user);
-
-  React.useEffect(() => {
-    initializeSocketConnection();
-  }, []);
-
-  return (
 import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
-import TopBar from "./components/TopBar";
-import EmptyState from "./components/EmptyState";
-import MessageList from "./components/MessageList";
-import PromptInput from "./components/PromptInput";
-import { mockThreads } from "./data/mockData";
+import MobileTopBar from "./components/MobileTopBar";
+import HeroSearch from "./components/HeroSearch";
+import AnswerView from "./components/AnswerView";
 
-/**
- * VisionAI dashboard shell.
- *
- * To wire this up to real data:
- *  - Replace `mockThreads` with your getChatsController API response
- *    (e.g. via a useEffect + fetch, or a Redux Toolkit thunk).
- *  - Replace the local `messages` state + handleSubmit with your
- *    Redux chat slice: dispatch a thunk that calls chatController,
- *    then read messages from the store instead of useState.
- */
-export default function VisionAIDashboard() {
+/* Global font import + scrollbar utilities used across sub-components */
+const GlobalStyles = () => (
+  <style>{`
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .thin-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .thin-scrollbar::-webkit-scrollbar-thumb { background: #232326; border-radius: 999px; }
+  `}</style>
+);
+
+export default function PerplexityDashboard() {
   const [collapsed, setCollapsed] = useState(false);
+  const [view, setView] = useState("home"); // "home" | "answer"
+  const [query, setQuery] = useState("");
   const [activeThread, setActiveThread] = useState(null);
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [tab, setTab] = useState("answer"); // "answer" | "sources"
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const hasConversation = messages.length > 0;
+  const goHome = () => {
+    setView("home");
+    setQuery("");
+    setActiveThread(null);
+    setTab("answer");
+  };
 
-  const handleSubmit = () => {
-    if (!input.trim()) return;
-    setMessages((prev) => [...prev, { role: "user", content: input }]);
-    setInput("");
-  }
+  const askDummy = (text) => {
+    if (!text.trim()) return;
+    setQuery(text);
+    setActiveThread(null);
+    setTab("answer");
+    setView("answer");
+  };
+
+  const openThread = (t) => {
+    setActiveThread(t);
+    setQuery(t.title);
+    setTab("answer");
+    setView("answer");
+  };
+
   return (
-    <div className="flex h-screen w-full bg-vision-bg font-body">
+    <div
+      className="flex h-screen w-screen overflow-hidden bg-[#0A0A0B] text-[#F2F1EC]"
+      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+    >
+      <GlobalStyles />
+
       <Sidebar
         collapsed={collapsed}
-        threads={mockThreads}
-        activeId={activeThread}
-        onSelect={setActiveThread}
-        userName="Surya"
+        setCollapsed={setCollapsed}
+        mobileOpen={mobileOpen}
+        setMobileOpen={setMobileOpen}
+        view={view}
+        activeThread={activeThread}
+        goHome={goHome}
+        openThread={openThread}
       />
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <TopBar
-          collapsed={collapsed}
-          onToggle={() => setCollapsed(!collapsed)}
-          hasConversation={hasConversation}
-        />
+      <main className="flex min-w-0 flex-1 flex-col">
+        <MobileTopBar setMobileOpen={setMobileOpen} />
 
-        {!hasConversation ? (
-          <EmptyState value={input} onChange={setInput} onSubmit={handleSubmit} />
+        {view === "home" ? (
+          <HeroSearch query={query} setQuery={setQuery} askDummy={askDummy} />
         ) : (
-          <>
-            <MessageList messages={messages} />
-            <div className="px-6 pb-6 pt-4 flex justify-center">
-              <PromptInput value={input} onChange={setInput} onSubmit={handleSubmit} compact />
-            </div>
-          </>
+          <AnswerView query={query} tab={tab} setTab={setTab} goHome={goHome} />
         )}
-      </div>
+      </main>
     </div>
   );
-}
-  )
 }

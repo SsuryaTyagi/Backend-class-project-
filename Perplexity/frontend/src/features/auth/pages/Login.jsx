@@ -9,7 +9,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const { handleLogin, user, loading, error } = useAuth();
+  const { handleLogin, user, loading } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,11 +18,11 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handleLogin(formData.email, formData.password);
+    const res = await handleLogin(formData.email, formData.password);
 
     console.log(user);
 
-    if (user && !loading) {
+    if (res?.user) {
       navigate("/");
     }
   };
@@ -49,12 +49,6 @@ const Login = () => {
           <p className="text-sm text-[#6B6B65] mb-6">
             Log in to continue to your account
           </p>
-
-          {error && (
-            <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
-              {error}
-            </div>
-          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
