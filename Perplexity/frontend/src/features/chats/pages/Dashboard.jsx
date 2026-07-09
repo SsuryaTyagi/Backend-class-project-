@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import Sidebar from "./components/Sidebar";
-import MobileTopBar from "./components/MobileTopBar";
-import HeroSearch from "./components/HeroSearch";
-import AnswerView from "./components/AnswerView";
+import React, { useEffect, useState } from "react";
+import Sidebar from "../components/Sidebar";
+import MobileTopBar from "../components/MobileTopBar";
+import HeroSearch from "../components/HeroSearch";
+import AnswerView from "../components/AnswerView";
+import { useChat } from "../hooks/useChat";
 
-/* Global font import + scrollbar utilities used across sub-components */
 const GlobalStyles = () => (
   <style>{`
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -17,40 +17,53 @@ const GlobalStyles = () => (
 
 export default function PerplexityDashboard() {
   const [collapsed, setCollapsed] = useState(false);
-  const [view, setView] = useState("home"); // "home" | "answer"
-  const [query, setQuery] = useState("");
-  const [activeThread, setActiveThread] = useState(null);
-  const [tab, setTab] = useState("answer"); // "answer" | "sources"
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const goHome = () => {
-    setView("home");
-    setQuery("");
-    setActiveThread(null);
-    setTab("answer");
-  };
+  const {
+    initializeSocketConnection,
+    fetchChats,
+    handleSendMessage,
+    selectChat,
+    loading,
+    chats,
+    error,
+    currentChatId,
+  } = useChat();
 
-  const askDummy = (text) => {
-    if (!text.trim()) return;
-    setQuery(text);
-    setActiveThread(null);
-    setTab("answer");
-    setView("answer");
-  };
+  useEffect(() => {
+    initializeSocketConnection();
+    fetchChats();
+    // run once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const openThread = (t) => {
-    setActiveThread(t);
-    setQuery(t.title);
-    setTab("answer");
-    setView("answer");
-  };
+  const view = currentChatId ? "answer" : "home";
+  const activeChat = currentChatId ? chats[currentChatId] : null;
+  const messages = activeChat?.message || [];
+  const title = activeChat?.title || messages[0]?.content || "New chat";
+
+  const goHome = () => selectChat(null);
+
+  // No chatId yet → backend creates a brand-new chat
+  const startNewChat = (text) => handleSendMessage(text, null);
+
+  // Existing chat → appends to it
+  const sendFollowUp = (text) => handleSendMessage(text, currentChatId);
 
   return (
     <div
-      className="flex h-screen w-screen overflow-hidden bg-[#0A0A0B] text-[#F2F1EC]"
+      className="relative flex h-screen w-screen overflow-hidden bg-[#0A0A0B] text-[#F2F1EC]"
       style={{ fontFamily: "'Space Grotesk', sans-serif" }}
     >
       <GlobalStyles />
+
+      {error && (
+        <div className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-4">
+          <div className="pointer-events-auto rounded-lg border border-red-500/40 bg-[#1a0d0d] px-4 py-2 text-sm text-red-300 shadow-lg">
+            {error}
+          </div>
+        </div>
+      )}
 
       <Sidebar
         collapsed={collapsed}
@@ -58,18 +71,25 @@ export default function PerplexityDashboard() {
         mobileOpen={mobileOpen}
         setMobileOpen={setMobileOpen}
         view={view}
-        activeThread={activeThread}
+        chats={chats}
+        activeChat={currentChatId}
         goHome={goHome}
-        openThread={openThread}
+        openThread={selectChat}
       />
 
       <main className="flex min-w-0 flex-1 flex-col">
         <MobileTopBar setMobileOpen={setMobileOpen} />
 
         {view === "home" ? (
-          <HeroSearch query={query} setQuery={setQuery} askDummy={askDummy} />
+          <HeroSearch onSend={startNewChat} loading={loading} />
         ) : (
-          <AnswerView query={query} tab={tab} setTab={setTab} goHome={goHome} />
+          <AnswerView
+            title={title}
+            messages={messages}
+            goHome={goHome}
+            onSend={sendFollowUp}
+            loading={loading}
+          />
         )}
       </main>
     </div>
