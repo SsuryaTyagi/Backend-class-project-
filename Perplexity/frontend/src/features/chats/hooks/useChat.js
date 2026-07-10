@@ -8,7 +8,10 @@ import {
 } from "../service/chat.api";
 import { initializeSocketConnection } from "../service/chat.socket";
 import {
-  setLoading,
+  setChatsLoading,
+  setMessagesLoading,
+  setSendLoading,
+  setDeleteLoading,
   setError,
   setChats,
   addChat,
@@ -18,33 +21,44 @@ import {
   setCurrentChatId,
 } from "../chat.slice";
 import { getErrorMessage } from "../utils/errors";
+import { useEffect } from "react";
 
 export const useChat = () => {
   const dispatch = useDispatch();
-  const { loading, chats, error, currentChatId } = useSelector((state) => state.chat);
+  const {
+    chatsLoading,
+    messagesLoading,
+    sendLoading,
+    deleteLoading,
+    chats,
+    error,
+    currentChatId,
+  } = useSelector((state) => state.chat);
 
   const fetchChats = useCallback(async () => {
     try {
-      dispatch(setLoading(true));
+      dispatch(setChatsLoading(true));
       const res = await getChats();
+      console.log("fetchChats API response:", res.data); // TEMP: remove once confirmed working
       dispatch(setChats(res.data));
     } catch (err) {
+      console.error("fetchChats error:", err); // TEMP: remove once confirmed working
       dispatch(setError(getErrorMessage(err, "Could not load chats")));
     } finally {
-      dispatch(setLoading(false));
+      dispatch(setChatsLoading(false));
     }
   }, [dispatch]);
 
   const fetchMessages = useCallback(
     async (chatId) => {
       try {
-        dispatch(setLoading(true));
+        dispatch(setMessagesLoading(true));
         const res = await getMessages(chatId);
         dispatch(setChatMessages({ chatId, messages: res.data }));
       } catch (err) {
         dispatch(setError(getErrorMessage(err, "Could not load messages")));
       } finally {
-        dispatch(setLoading(false));
+        dispatch(setMessagesLoading(false));
       }
     },
     [dispatch]
@@ -54,7 +68,7 @@ export const useChat = () => {
   const handleSendMessage = useCallback(
     async (message, chatId) => {
       try {
-        dispatch(setLoading(true));
+        dispatch(setSendLoading(true));
         dispatch(setError(null));
         const res = await sendMessage(message, chatId);
         const { chat, userMessage, aiMessage } = res.data;
@@ -71,7 +85,7 @@ export const useChat = () => {
       } catch (err) {
         dispatch(setError(getErrorMessage(err, "Failed to send message")));
       } finally {
-        dispatch(setLoading(false));
+        dispatch(setSendLoading(false));
       }
     },
     [dispatch]
@@ -80,13 +94,13 @@ export const useChat = () => {
   const handleDeleteChat = useCallback(
     async (chatId) => {
       try {
-        dispatch(setLoading(true));
+        dispatch(setDeleteLoading(true));
         await deleteChat(chatId);
         dispatch(removeChat(chatId));
       } catch (err) {
         dispatch(setError(getErrorMessage(err, "Failed to delete chat")));
       } finally {
-        dispatch(setLoading(false));
+        dispatch(setDeleteLoading(false));
       }
     },
     [dispatch]
@@ -103,6 +117,12 @@ export const useChat = () => {
     },
     [dispatch, chats, fetchMessages]
   );
+    useEffect(() => {
+    initializeSocketConnection();
+    fetchChats();
+    // run once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     initializeSocketConnection,
@@ -111,7 +131,10 @@ export const useChat = () => {
     handleSendMessage,
     handleDeleteChat,
     selectChat,
-    loading,
+    chatsLoading,
+    messagesLoading,
+    sendLoading,
+    deleteLoading,
     chats,
     error,
     currentChatId,

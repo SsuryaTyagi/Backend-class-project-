@@ -6,6 +6,10 @@ import { createSlice } from "@reduxjs/toolkit";
    fetched or a message has been sent in it. */
 const initialState = {
   loading: false,
+  chatsLoading: false,
+  messagesLoading: false,
+  sendLoading: false,
+  deleteLoading: false,
   error: null,
   chats: {},
   currentChatId: null,
@@ -17,6 +21,18 @@ const chatSlice = createSlice({
   reducers: {
     setLoading(state, action) {
       state.loading = action.payload;
+    },
+    setChatsLoading(state, action) {
+      state.chatsLoading = action.payload;
+    },
+    setMessagesLoading(state, action) {
+      state.messagesLoading = action.payload;
+    },
+    setSendLoading(state, action) {
+      state.sendLoading = action.payload;
+    },
+    setDeleteLoading(state, action) {
+      state.deleteLoading = action.payload;
     },
     setError(state, action) {
       state.error = action.payload;
@@ -69,6 +85,10 @@ const chatSlice = createSlice({
 
 export const {
   setLoading,
+  setChatsLoading,
+  setMessagesLoading,
+  setSendLoading,
+  setDeleteLoading,
   setError,
   setChats,
   addChat,

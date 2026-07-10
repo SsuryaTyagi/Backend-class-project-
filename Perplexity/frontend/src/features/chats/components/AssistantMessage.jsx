@@ -2,13 +2,17 @@ import React from "react";
 import { Copy, ThumbsUp, ThumbsDown, RotateCcw, Share2 } from "lucide-react";
 import RoleAvatar from "./RoleAvatar";
 import { formatTime } from "../utils/formatDate";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function AssistantMessage({ message }) {
   return (
     <div className="flex items-start gap-3">
       <RoleAvatar role="ai" />
       <div className="min-w-0 flex-1">
-        <p className="text-[15px] leading-relaxed text-[#d9d9d9]">{message.content}</p>
+        <p className="text-[15px] leading-relaxed text-[#d9d9d9]">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
+        </p>
         <span className="mt-1 block text-[11px] text-[#5c5c62]">
           {formatTime(message.createdAt)}
         </span>

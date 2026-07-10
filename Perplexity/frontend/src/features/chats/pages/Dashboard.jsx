@@ -24,18 +24,15 @@ export default function PerplexityDashboard() {
     fetchChats,
     handleSendMessage,
     selectChat,
-    loading,
+    chatsLoading,
+    messagesLoading,
+    sendLoading,
     chats,
     error,
     currentChatId,
   } = useChat();
 
-  useEffect(() => {
-    initializeSocketConnection();
-    fetchChats();
-    // run once on mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
 
   const view = currentChatId ? "answer" : "home";
   const activeChat = currentChatId ? chats[currentChatId] : null;
@@ -81,14 +78,14 @@ export default function PerplexityDashboard() {
         <MobileTopBar setMobileOpen={setMobileOpen} />
 
         {view === "home" ? (
-          <HeroSearch onSend={startNewChat} loading={loading} />
+          <HeroSearch onSend={startNewChat} loading={sendLoading} />
         ) : (
           <AnswerView
             title={title}
             messages={messages}
             goHome={goHome}
             onSend={sendFollowUp}
-            loading={loading}
+            loading={messagesLoading || sendLoading}
           />
         )}
       </main>

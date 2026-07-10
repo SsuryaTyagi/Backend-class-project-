@@ -1,7 +1,7 @@
-// /**
-//  * @param {string} val
-//  * @return {Object}
-//  */
+// /
+//   @param {string} val
+//   @return {Object}
+//  /
 // var expect = function (val) {
 //   function toBe(num) {
 //     if (val === num) {
@@ -50,23 +50,23 @@
 
 // Example 1:
 
-// Input: functions = [x => x + 1, x => x * x, x => 2 * x], x = 4
+// Input: functions = [x => x + 1, x => x  x, x => 2  x], x = 4
 // Output: 65
 // Explanation:
 // Evaluating from right to left ...
 // Starting with x = 4.
-// 2 * (4) = 8
-// (8) * (8) = 64
+// 2  (4) = 8
+// (8)  (8) = 64
 // (64) + 1 = 65
 // Example 2:
 
-// Input: functions = [x => 10 * x, x => 10 * x, x => 10 * x], x = 1
+// Input: functions = [x => 10  x, x => 10  x, x => 10  x], x = 1
 // Output: 1000
 // Explanation:
 // Evaluating from right to left ...
-// 10 * (1) = 10
-// 10 * (10) = 100
-// 10 * (100) = 1000
+// 10  (1) = 10
+// 10  (10) = 100
+// 10  (100) = 1000
 // Example 3:
 
 // Input: functions = [], x = 42
@@ -143,17 +143,54 @@
 //     return value1 + value2;
 // };
 
-/**
- * addTwoPromises(Promise.resolve(2), Promise.resolve(2))
- *   .then(console.log); // 4
- */
+// /
+//   addTwoPromises(Promise.resolve(2), Promise.resolve(2))
+//     .then(console.log); // 4
+//  /
 
 
 
-async function sleep(millis) {
-    return await new Promise(resolve => setTimeout(resolve, millis));
-}
+// async function sleep(millis) {
+//     return await new Promise(resolve => setTimeout(resolve, millis));
+// }
 
 
-  let t = Date.now()
-  sleep(100).then(() => console.log(Date.now()-t)) // 100
+//   let t = Date.now()
+//   sleep(100).then(() => console.log(Date.now()-t)) // 100
+
+
+var cancellable = function(fn, args, t) {
+   fn(...)
+    const timeoutId = setTimeout(() => {
+        fn(...args);
+    }, t);
+
+    return function cancelFn() {
+        clearTimeout(timeoutId);
+    };
+};
+
+
+
+  const result = [];
+ 
+   const fn = (x) => x*5  
+   const args = [2], t = 20, cancelTimeMs = 50;
+ 
+   const start = performance.now();
+ 
+   const log = (...argsArr) => {
+       const diff = Math.floor(performance.now() - start);
+       result.push({"time": diff, "returned": fn(...argsArr)});
+   }
+        
+   const cancel = cancellable(log, args, t);
+ 
+   const maxT = Math.max(t, cancelTimeMs);
+            
+   setTimeout(cancel, cancelTimeMs);
+ 
+   setTimeout(() => {
+       console.log(result); // [{"time":20,"returned":10}]
+   }, maxT + 15)
+ 
