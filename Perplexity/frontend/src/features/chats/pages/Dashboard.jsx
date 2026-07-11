@@ -21,25 +21,40 @@ export default function PerplexityDashboard() {
 
   const {
     initializeSocketConnection,
-    fetchChats,
+    handleGetChats,
     handleSendMessage,
-    selectChat,
-    chatsLoading,
-    messagesLoading,
-    sendLoading,
+    loading,
     chats,
     error,
     currentChatId,
   } = useChat();
 
-
+  useEffect(() => {
+    handleGetChats();
+    // initializeSocketConnection is just an imported function reference here,
+    // not wired to dispatch/dispatched events yet — calling it as-is won't
+    // update Redux state on incoming socket messages.
+    initializeSocketConnection();
+  }, []);
 
   const view = currentChatId ? "answer" : "home";
   const activeChat = currentChatId ? chats[currentChatId] : null;
+  // NOTE: slice currently stores this as `message` (singular), not `messages`
   const messages = activeChat?.message || [];
   const title = activeChat?.title || messages[0]?.content || "New chat";
 
-  const goHome = () => selectChat(null);
+  const goHome = () => {
+    console.warn(
+      "goHome: no setCurrentChatId exposed from useChat yet — add it to the hook's return value to enable this.",
+    );
+  };
+
+  const openThread = (chatId) => {
+    console.warn(
+      "openThread: no selectChat exposed from useChat yet — add chat switching logic to the hook to enable this.",
+      chatId,
+    );
+  };
 
   // No chatId yet → backend creates a brand-new chat
   const startNewChat = (text) => handleSendMessage(text, null);
@@ -71,21 +86,21 @@ export default function PerplexityDashboard() {
         chats={chats}
         activeChat={currentChatId}
         goHome={goHome}
-        openThread={selectChat}
+        openThread={openThread}
       />
 
       <main className="flex min-w-0 flex-1 flex-col">
         <MobileTopBar setMobileOpen={setMobileOpen} />
 
         {view === "home" ? (
-          <HeroSearch onSend={startNewChat} loading={sendLoading} />
+          <HeroSearch onSend={startNewChat} loading={loading} />
         ) : (
           <AnswerView
             title={title}
             messages={messages}
             goHome={goHome}
             onSend={sendFollowUp}
-            loading={messagesLoading || sendLoading}
+            loading={loading}
           />
         )}
       </main>

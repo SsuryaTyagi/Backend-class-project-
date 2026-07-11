@@ -16,14 +16,14 @@ export default function ChatThread({ messages }) {
   }
 
   return (
-    <div className="mt-5 space-y-6 divide-y divide-[#1a1a1c]">
+<div className="mt-5 space-y-6 divide-y divide-[#1a1a1c]">
       <div className="flex justify-center pb-2">
         <span className="rounded-full bg-[#141416] px-3 py-1 text-[11px] text-[#5c5c62]">
           {formatDay(messages[0].createdAt)}
         </span>
       </div>
       {messages.map((m, i) => (
-        <div key={m._id} className={i === 0 ? "" : "pt-6"}>
+        <div key={i} className={i === 0 ? "" : "pt-6"}>
           {m.role === "user" ? <UserMessage message={m} /> : <AssistantMessage message={m} />}
         </div>
       ))}

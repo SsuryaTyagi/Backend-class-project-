@@ -10,9 +10,11 @@ export default function AssistantMessage({ message }) {
     <div className="flex items-start gap-3">
       <RoleAvatar role="ai" />
       <div className="min-w-0 flex-1">
-        <p className="text-[15px] leading-relaxed text-[#d9d9d9]">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
-        </p>
+        <div className="text-[15px] leading-relaxed text-[#d9d9d9]">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {message.content}
+          </ReactMarkdown>
+        </div>
         <span className="mt-1 block text-[11px] text-[#5c5c62]">
           {formatTime(message.createdAt)}
         </span>

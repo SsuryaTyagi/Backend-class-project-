@@ -16,7 +16,7 @@ export default function Sidebar({
   openThread,
 }) {
   const threads = Object.values(chats || {}).sort(
-    (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+    (a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated)
   );
 
   return (
@@ -75,19 +75,19 @@ export default function Sidebar({
             <div className="flex flex-col gap-0.5">
               {threads.map((t) => (
                 <button
-                  key={t._id}
+                  key={t.id}
                   onClick={() => {
-                    openThread(t._id);
+                    openThread(t.id);
                     setMobileOpen(false);
                   }}
                   className={`flex items-center justify-between gap-2 rounded-lg px-2 py-1.5 text-left text-[13px] transition-colors ${
-                    activeChat === t._id
+                    activeChat === t.id
                       ? "bg-[#1c1c1f] text-[#F2F1EC]"
                       : "text-[#8B8B93] hover:bg-[#141416] hover:text-[#d9d9d9]"
                   }`}
                 >
                   <span className="truncate">{t.title || "New chat"}</span>
-                  <span className="shrink-0 text-[10px] text-[#5c5c62]">{formatDay(t.updatedAt)}</span>
+                  <span className="shrink-0 text-[10px] text-[#5c5c62]">{formatDay(t.lastUpdated)}</span>
                 </button>
               ))}
               {threads.length === 0 && (

@@ -11,7 +11,7 @@ export const sendMessage = async (message, chatId) => {
       message: message,
       chat: chatId,
     });
-    return response;
+    return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
   }
@@ -20,7 +20,7 @@ export const sendMessage = async (message, chatId) => {
 export const getChats = async () => {
   try {
     const response = await api.get("/api/chat/chats");
-    return response;
+    return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
   }
@@ -29,7 +29,7 @@ export const getChats = async () => {
 export const getMessages = async (chatId) => {
   try {
     const response = await api.get(`/api/chat/messages/${chatId}`);
-    return response;
+    return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
   }
@@ -38,7 +38,7 @@ export const getMessages = async (chatId) => {
 export const deleteChat = async (chatId) => {
   try {
     const response = await api.delete(`/api/chat/delete/${chatId}`);
-    return response;
+    return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
   }
