@@ -13,6 +13,8 @@ import {
   setCurrentChatId,
   createNewChat,
   addNewMessage,
+  setMessages,
+  removeChat,
 } from "../chat.slice";
 import { getErrorMessage } from "../utils/errors";
 
@@ -87,6 +89,32 @@ export const useChat = () => {
     }
   };
 
+  const handleGetMessages = async (chatId) => {
+    try {
+      dispatch(setLoading(true));
+      dispatch(setCurrentChatId(chatId));
+      const data = await getMessages(chatId);
+      const { messages } = data;
+      dispatch(setMessages({ chatId, messages }));
+    } catch (error) {
+      dispatch(setError(getErrorMessage(error)));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  const handleDeleteChat = async (chatId) => {
+    try {
+      dispatch(setLoading(true));
+      await deleteChat(chatId);
+      dispatch(removeChat(chatId));
+    } catch (error) {
+      dispatch(setError(getErrorMessage(error)));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
   const selectChat = (chatId) => {
     dispatch(setCurrentChatId(chatId));
   };
@@ -101,6 +129,8 @@ export const useChat = () => {
     handleSendMessage,
     selectChat,
     goHome,
+    handleGetMessages,
+    handleDeleteChat,
     loading,
     chats,
     error,

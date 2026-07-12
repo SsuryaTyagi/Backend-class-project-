@@ -23,6 +23,18 @@ const chatSlice = createSlice({
         lastUpdated: new Date().toISOString(),
       };
     },
+    setMessages: (state, action) => {
+      const { chatId, messages } = action.payload;
+      if (!state.chats[chatId]) {
+        state.chats[chatId] = {
+          id: chatId,
+          message: messages,
+          lastUpdated: new Date().toISOString(),
+        };
+      } else {
+        state.chats[chatId].message = messages;
+      }
+    },
     addNewMessage: (state, action) => {
       const { chatId, content, role } = action.payload;
       if (!state.chats[chatId]) {
@@ -35,6 +47,13 @@ const chatSlice = createSlice({
       }
       state.chats[chatId].message.push({ content, role });
       state.chats[chatId].lastUpdated = new Date().toISOString();
+    },
+    removeChat: (state, action) => {
+      const chatId = action.payload;
+      delete state.chats[chatId];
+      if (state.currentChatId === chatId) {
+        state.currentChatId = null;
+      }
     },
     setChats: (state, action) => {
       state.chats = action.payload;
@@ -70,5 +89,7 @@ export const {
   setChatsLoading,
   setMessagesLoading,
   setSendLoading,
+  setMessages,
+  removeChat
 } = chatSlice.actions;
 export default chatSlice.reducer;

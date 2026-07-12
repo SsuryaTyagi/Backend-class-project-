@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { login, register, getMe } from "../service/auth.api";
+import { login, register, getMe, logout } from "../service/auth.api";
 import { setUser, setLoading, setError } from "../auth.slice";
 import { useEffect } from "react";
 import { getErrorMessages } from "../utils/getErrorMessage";
@@ -55,11 +55,24 @@ export const useAuth = () => {
       dispatch(setLoading(false));
     }
   };
+  const handleLogout = async () => {
+    try {
+      dispatch(setLoading(true));
+      const res = await logout();
+      dispatch(setUser(null));
+      toast.success(res.message);
+    } catch (error) {
+      dispatch(setError(getErrorMessages(error)));
+      toast.error(error.message || "Logout Failed");
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
   useEffect(() => {
     if (user) return;
     handleGetMe();
   }, []);
 
-  return { handleRegister, handleLogin, handleGetMe, user, loading, error };
+  return { handleRegister, handleLogin, handleGetMe,handleLogout, user, loading, error };
 };

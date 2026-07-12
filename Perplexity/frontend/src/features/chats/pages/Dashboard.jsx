@@ -23,6 +23,9 @@ export default function PerplexityDashboard() {
     initializeSocketConnection,
     handleGetChats,
     handleSendMessage,
+    goHome,
+    handleDeleteChat,
+    handleGetMessages,
     loading,
     chats,
     error,
@@ -43,17 +46,11 @@ export default function PerplexityDashboard() {
   const messages = activeChat?.message || [];
   const title = activeChat?.title || messages[0]?.content || "New chat";
 
-  const goHome = () => {
-    console.warn(
-      "goHome: no setCurrentChatId exposed from useChat yet — add it to the hook's return value to enable this.",
-    );
-  };
-
   const openThread = (chatId) => {
-    console.warn(
-      "openThread: no selectChat exposed from useChat yet — add chat switching logic to the hook to enable this.",
-      chatId,
-    );
+    handleGetMessages(chatId);
+  };
+  const DeleteChat = async (chatId) => {
+    await handleDeleteChat(chatId);
   };
 
   // No chatId yet → backend creates a brand-new chat
@@ -101,6 +98,8 @@ export default function PerplexityDashboard() {
             goHome={goHome}
             onSend={sendFollowUp}
             loading={loading}
+            DeleteChat={DeleteChat}
+            currentChatId={currentChatId}
           />
         )}
       </main>

@@ -38,3 +38,12 @@ export const getMe = async () => {
     throw error.response?.data || error.message;
   }
 };
+
+export const logout = async()=>{
+  try {
+    const respose = await api.post("/logout");
+    return respose.data
+  } catch (error) {
+       throw error.response?.data || error.message;
+  }
+}

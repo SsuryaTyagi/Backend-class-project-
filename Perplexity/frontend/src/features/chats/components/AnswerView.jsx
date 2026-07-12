@@ -1,14 +1,27 @@
 import React, { useState } from "react";
-import { Search, ArrowUp, X } from "lucide-react";
+import { Search, ArrowUp, X, Trash2 } from "lucide-react";
 import ChatThread from "./ChatThread";
+import { useChat } from "../hooks/useChat";
 
-export default function AnswerView({ title, messages, goHome, onSend, loading }) {
+export default function AnswerView({
+  title,
+  messages,
+  goHome,
+  onSend,
+  loading,
+  DeleteChat,
+  currentChatId // added
+}) {
   const [value, setValue] = useState("");
 
   const submit = () => {
     if (!value.trim() || loading) return;
     onSend(value);
     setValue("");
+  };
+
+  const handleDeleteClick = () => {
+    DeleteChat(currentChatId);
   };
 
   return (
@@ -22,7 +35,19 @@ export default function AnswerView({ title, messages, goHome, onSend, loading })
           <span className="shrink-0">/</span>
           <span className="max-w-[320px] truncate text-[#F2F1EC]">{title}</span>
         </div>
-        <button onClick={goHome} className="shrink-0 text-[#8B8B93] hover:text-[#D4AF37]">
+
+        <button
+          onClick={handleDeleteClick}
+          className="group flex items-center gap-1.5 rounded-lg border border-red-500/30 bg-red-500/5 px-3 py-1.5 text-[13px] font-medium text-red-400 transition-colors hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-300 active:scale-95"
+        >
+          <Trash2 size={14} className="transition-transform group-hover:scale-110" />
+          Delete Chat
+        </button>
+
+        <button
+          onClick={goHome}
+          className="shrink-0 text-[#8B8B93] hover:text-[#D4AF37]"
+        >
           <X size={16} />
         </button>
       </div>

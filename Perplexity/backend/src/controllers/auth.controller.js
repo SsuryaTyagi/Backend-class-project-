@@ -130,5 +130,9 @@ const getMe = async (req, res) => {
     user,
   });
 };
+const logout =  (req, res) => {
+  res.clearCookie('token');
+  res.json({ success: true, message: 'Logged out' });
+}
 
-module.exports = { RegisterController, VerifyEmailController, LoginController, getMe };
+module.exports = { RegisterController, VerifyEmailController, LoginController, getMe,logout };

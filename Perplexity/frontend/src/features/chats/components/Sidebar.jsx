@@ -3,6 +3,7 @@ import { Plus, Compass, Library, Home, Settings, ChevronLeft, ChevronRight, X } 
 import Wordmark from "./Wordmark";
 import NavItem from "./NavItem";
 import { formatDay } from "../utils/formatDate";
+import Logout from "../../auth/component/Logout";
 
 export default function Sidebar({
   collapsed,
@@ -100,13 +101,7 @@ export default function Sidebar({
         {collapsed && <div className="hidden flex-1 md:block" />}
 
         <div className="border-t border-[#1a1a1c] p-3">
-          <NavItem icon={Settings} label="Settings" collapsed={collapsed} active={false} onClick={() => {}} />
-          <button
-            onClick={() => setCollapsed((c) => !c)}
-            className="mt-1 hidden w-full items-center justify-center gap-2 rounded-lg px-3 py-2 text-[#8B8B93] hover:bg-[#141416] hover:text-[#D4AF37] md:flex"
-          >
-            {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-          </button>
+        <Logout/>
         </div>
       </aside>
     </>
