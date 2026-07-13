@@ -1,9 +1,19 @@
 import React from "react";
-import { Plus, Compass, Library, Home, Settings, ChevronLeft, ChevronRight, X } from "lucide-react";
+import {
+  Plus,
+  Compass,
+  Library,
+  Home,
+  Settings,
+  ChevronLeft,
+  ChevronRight,
+  X,
+} from "lucide-react";
 import Wordmark from "./Wordmark";
 import NavItem from "./NavItem";
 import { formatDay } from "../utils/formatDate";
 import Logout from "../../auth/component/Logout";
+import Profile from "../../auth/component/Profile";
 
 export default function Sidebar({
   collapsed,
@@ -17,7 +27,7 @@ export default function Sidebar({
   openThread,
 }) {
   const threads = Object.values(chats || {}).sort(
-    (a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated)
+    (a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated),
   );
 
   return (
@@ -59,8 +69,20 @@ export default function Sidebar({
         </div>
 
         <nav className="mt-4 flex flex-col gap-1 px-3">
-          <NavItem icon={Home} label="Home" collapsed={collapsed} active={view === "home"} onClick={goHome} />
-          <NavItem icon={Compass} label="Discover" collapsed={collapsed} active={false} onClick={() => {}} />
+          <NavItem
+            icon={Home}
+            label="Home"
+            collapsed={collapsed}
+            active={view === "home"}
+            onClick={goHome}
+          />
+          <NavItem
+            icon={Compass}
+            label="Discover"
+            collapsed={collapsed}
+            active={false}
+            onClick={() => {}}
+          />
           <NavItem
             icon={Library}
             label="Library"
@@ -72,7 +94,9 @@ export default function Sidebar({
 
         {!collapsed && (
           <div className="mt-5 flex-1 overflow-y-auto px-3 thin-scrollbar">
-            <p className="mb-2 px-1 text-[11px] uppercase tracking-wider text-[#5c5c62]">Recent</p>
+            <p className="mb-2 px-1 text-[11px] uppercase tracking-wider text-[#5c5c62]">
+              Recent
+            </p>
             <div className="flex flex-col gap-0.5">
               {threads.map((t) => (
                 <button
@@ -88,11 +112,15 @@ export default function Sidebar({
                   }`}
                 >
                   <span className="truncate">{t.title || "New chat"}</span>
-                  <span className="shrink-0 text-[10px] text-[#5c5c62]">{formatDay(t.lastUpdated)}</span>
+                  <span className="shrink-0 text-[10px] text-[#5c5c62]">
+                    {formatDay(t.lastUpdated)}
+                  </span>
                 </button>
               ))}
               {threads.length === 0 && (
-                <p className="px-2 py-1.5 text-[12px] text-[#5c5c62]">No chats yet</p>
+                <p className="px-2 py-1.5 text-[12px] text-[#5c5c62]">
+                  No chats yet
+                </p>
               )}
             </div>
           </div>
@@ -101,7 +129,10 @@ export default function Sidebar({
         {collapsed && <div className="hidden flex-1 md:block" />}
 
         <div className="border-t border-[#1a1a1c] p-3">
-        <Logout/>
+          <Logout />
+        </div>
+        <div className="border-t border-[#1a1a1c] p-3">
+        <Profile/>
         </div>
       </aside>
     </>
