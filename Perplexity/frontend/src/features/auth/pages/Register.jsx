@@ -39,28 +39,37 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FBFAF7] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#0A0A0A] px-4">
       <div className="w-full max-w-md">
         {/* Logo / Brand mark */}
         <div className="flex justify-center mb-8">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-full bg-[#20808D] flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">V</span>
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-full bg-[#D4AF37] flex items-center justify-center">
+              <span className="text-[#0A0A0A] font-bold text-sm">V</span>
             </div>
-            <span className="text-lg font-semibold text-[#1F1F1F] tracking-tight">
-              VisionAI
+            <span
+              className="text-2xl text-[#F5F1E8] tracking-wide"
+              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+            >
+              VISIONAI
             </span>
           </div>
         </div>
 
-        <div className="bg-white border border-[#E8E6DF] rounded-2xl shadow-sm p-8">
-          <h1 className="text-2xl font-semibold text-[#1F1F1F] mb-1">
-            Create your account
+        <div
+          className="bg-[#141414] border border-[#2A2A2A] rounded-2xl shadow-[0_0_40px_rgba(212,175,55,0.05)] p-8"
+          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+        >
+          <h1
+            className="text-3xl text-[#F5F1E8] mb-1 tracking-wide"
+            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+          >
+            CREATE YOUR ACCOUNT
           </h1>
-          <p className="text-sm text-[#6B6B65] mb-6">Sign up to get started</p>
+          <p className="text-sm text-[#8A8A82] mb-6">Sign up to get started</p>
 
           {error && (
-            <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
+            <div className="mb-4 text-sm text-[#E8A5A5] bg-[#2A1414] border border-[#4A2020] rounded-lg px-3 py-2">
               {error}
             </div>
           )}
@@ -69,7 +78,7 @@ const Register = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-[#1F1F1F] mb-1.5"
+                className="block text-sm font-medium text-[#D4D4CE] mb-1.5"
               >
                 Email
               </label>
@@ -81,14 +90,14 @@ const Register = () => {
                 onChange={handleChange}
                 required
                 placeholder="you@example.com"
-                className="w-full px-3.5 py-2.5 rounded-lg border border-[#E0DED6] bg-[#FBFAF7] text-[#1F1F1F] placeholder-[#A3A199] text-sm focus:outline-none focus:ring-2 focus:ring-[#20808D]/40 focus:border-[#20808D] transition"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-[#2A2A2A] bg-[#0A0A0A] text-[#F5F1E8] placeholder-[#5A5A54] text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40 focus:border-[#D4AF37] transition"
               />
             </div>
 
             <div>
               <label
                 htmlFor="username"
-                className="block text-sm font-medium text-[#1F1F1F] mb-1.5"
+                className="block text-sm font-medium text-[#D4D4CE] mb-1.5"
               >
                 Username
               </label>
@@ -100,14 +109,14 @@ const Register = () => {
                 onChange={handleChange}
                 required
                 placeholder="yourusername"
-                className="w-full px-3.5 py-2.5 rounded-lg border border-[#E0DED6] bg-[#FBFAF7] text-[#1F1F1F] placeholder-[#A3A199] text-sm focus:outline-none focus:ring-2 focus:ring-[#20808D]/40 focus:border-[#20808D] transition"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-[#2A2A2A] bg-[#0A0A0A] text-[#F5F1E8] placeholder-[#5A5A54] text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40 focus:border-[#D4AF37] transition"
               />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-[#1F1F1F] mb-1.5"
+                className="block text-sm font-medium text-[#D4D4CE] mb-1.5"
               >
                 Password
               </label>
@@ -119,24 +128,24 @@ const Register = () => {
                 onChange={handleChange}
                 required
                 placeholder="••••••••"
-                className="w-full px-3.5 py-2.5 rounded-lg border border-[#E0DED6] bg-[#FBFAF7] text-[#1F1F1F] placeholder-[#A3A199] text-sm focus:outline-none focus:ring-2 focus:ring-[#20808D]/40 focus:border-[#20808D] transition"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-[#2A2A2A] bg-[#0A0A0A] text-[#F5F1E8] placeholder-[#5A5A54] text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40 focus:border-[#D4AF37] transition"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#20808D] hover:bg-[#1B6E79] disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-lg transition"
+              className="w-full bg-[#D4AF37] hover:bg-[#C29D2E] disabled:opacity-60 disabled:cursor-not-allowed text-[#0A0A0A] text-sm font-semibold py-2.5 rounded-lg transition"
             >
               {loading ? "Creating account..." : "Sign up"}
             </button>
           </form>
 
-          <p className="text-sm text-[#6B6B65] text-center mt-6">
+          <p className="text-sm text-[#8A8A82] text-center mt-6">
             Already have an account?{" "}
             <a
               href="/login"
-              className="text-[#20808D] font-medium hover:underline"
+              className="text-[#D4AF37] font-medium hover:underline"
             >
               Log in
             </a>
