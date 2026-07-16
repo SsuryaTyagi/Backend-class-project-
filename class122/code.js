@@ -159,38 +159,67 @@
 //   sleep(100).then(() => console.log(Date.now()-t)) // 100
 
 
-var cancellable = function(fn, args, t) {
-   fn(...)
-    const timeoutId = setTimeout(() => {
-        fn(...args);
-    }, t);
+// var cancellable = function(fn, args, t) {
+//    fn(...)
+//     const timeoutId = setTimeout(() => {
+//         fn(...args);
+//     }, t);
 
-    return function cancelFn() {
-        clearTimeout(timeoutId);
-    };
-};
+//     return function cancelFn() {
+//         clearTimeout(timeoutId);
+//     };
+// };
 
 
 
-  const result = [];
+//   const result = [];
  
-   const fn = (x) => x*5  
-   const args = [2], t = 20, cancelTimeMs = 50;
+//    const fn = (x) => x*5  
+//    const args = [2], t = 20, cancelTimeMs = 50;
  
-   const start = performance.now();
+//    const start = performance.now();
  
-   const log = (...argsArr) => {
-       const diff = Math.floor(performance.now() - start);
-       result.push({"time": diff, "returned": fn(...argsArr)});
-   }
+//    const log = (...argsArr) => {
+//        const diff = Math.floor(performance.now() - start);
+//        result.push({"time": diff, "returned": fn(...argsArr)});
+//    }
         
-   const cancel = cancellable(log, args, t);
+//    const cancel = cancellable(log, args, t);
  
-   const maxT = Math.max(t, cancelTimeMs);
+//    const maxT = Math.max(t, cancelTimeMs);
             
-   setTimeout(cancel, cancelTimeMs);
+//    setTimeout(cancel, cancelTimeMs);
  
-   setTimeout(() => {
-       console.log(result); // [{"time":20,"returned":10}]
-   }, maxT + 15)
+//    setTimeout(() => {
+//        console.log(result); // [{"time":20,"returned":10}]
+//    }, maxT + 15)
  
+/**
+ * @param {Function} fn
+ * @param {number} t
+ * @return {Function}
+ */
+function timeLimit(fn, t) {
+    return async function(...args) {
+        return new Promise((resolve, reject) => {
+            const timer = setTimeout(() => {
+                reject("Time Limit Exceeded");
+            }, t);
+
+            fn(...args)
+                .then((res) => {
+                    clearTimeout(timer);
+                    resolve(res);
+                })
+                .catch((err) => {
+                    clearTimeout(timer);
+                    reject(err);
+                });
+        });
+    };
+}
+
+/**
+ * const limited = timeLimit((t) => new Promise(res => setTimeout(res, t)), 100);
+ * limited(150).catch(console.log) // "Time Limit Exceeded" at t=100ms
+ */
