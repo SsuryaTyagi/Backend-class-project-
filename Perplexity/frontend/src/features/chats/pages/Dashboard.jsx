@@ -46,6 +46,7 @@ export default function PerplexityDashboard() {
   const messages = activeChat?.message || [];
   const title = activeChat?.title || messages[0]?.content || "New chat";
 
+
   const openThread = (chatId) => {
     handleGetMessages(chatId);
   };

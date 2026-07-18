@@ -34,29 +34,29 @@ export const useChat = () => {
     try {
       dispatch(setLoading(true));
       const data = await sendMessage(message, chatId);
-      const { chat, aiMessage } = data;
-
+      const { userMessage, aiMessage } = data;
+      
       dispatch(
         createNewChat({
-          chatId: chat._id,
-          title: chat.title,
+          chatId: aiMessage.chat,
+          title: aiMessage.consent,
         }),
       );
       dispatch(
         addNewMessage({
-          chatId: chat._id,
+          chatId: userMessage.chat,
           content: message,
           role: "user",
         }),
       );
       dispatch(
         addNewMessage({
-          chatId: chat._id,
+          chatId: aiMessage.chat,
           content: aiMessage.content,
           role: aiMessage.role,
         }),
       );
-      dispatch(setCurrentChatId(chat._id));
+      dispatch(setCurrentChatId(aiMessage.chat));
     } catch (error) {
       dispatch(setError(getErrorMessage(error)));
     } finally {
@@ -69,6 +69,8 @@ export const useChat = () => {
       dispatch(setLoading(true));
       const data = await getChats();
       const { chats } = data;
+      console.log(data);
+      
       dispatch(
         setChats(
           chats.reduce((acc, chat) => {

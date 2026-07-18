@@ -5,7 +5,7 @@ const generateVerificationToken = (user) => {
   return jwt.sign(
     { id: user._id, email: user.email },
     process.env.JWT_VERIFY_SECRET,
-    { expiresIn: "24h" }
+    { expiresIn: "7d" }
   );
 };
 
