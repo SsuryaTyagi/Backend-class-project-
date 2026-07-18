@@ -1,7 +1,7 @@
 require("dotenv/config");
 const { ChatMistralAI } = require("@langchain/mistralai");
 const { HumanMessage, AIMessage } = require("@langchain/core/messages");
-const { model, agent } = require("./agent.js");
+const { agent } = require("./agent.js");
 
 
 const generateResponse = async (messages) => {
